@@ -221,6 +221,8 @@ class Base implements LoaderInterface
 
             $this->currentValue = $curValue;
 
+            $returnObject = false;
+
             try {
                 $this->populateObject($instance, $class, $name, $spec, $classFlags, $instanceFlags, $curValue);
                 $this->currentValue = null;
