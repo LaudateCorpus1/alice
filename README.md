@@ -408,6 +408,18 @@ You can also randomize the amount by combining it with faker data:
 
 The `@self` reference is assigned to the current fixture instance.
 
+#### Passing references to providers ####
+
+You can pass references to providers much like you can pass [variables](#variables):
+
+```yaml
+Nelmio\Entity\Group:
+    group1:
+        owner: <numberBetween(1, 200)>
+    group2:
+        owner: <numberBetween(@group1->owner, 200)>
+```
+
 ### Handling Unique Constraints ###
 
 Quite often some database fields have a unique constraint set on them, in which
