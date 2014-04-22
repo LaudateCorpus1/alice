@@ -980,6 +980,27 @@ class BaseTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($this->loader->getReference('user2')->favoriteNumber, 42);
     }
 
+    public function testObjectsInheritObjects()
+    {
+        $res = $this->loadData(array(
+            self::USER => array(
+                'user' => array(
+                    'fullname'    => '<firstName()>',
+                    'favoriteNumber'    => 2
+                ),
+                'user2 (extends user)' => array(
+                    'favoriteNumber'    => 42
+                ),
+            ),
+        ));
+
+        $this->assertCount(2, $res);
+        $this->assertInstanceOf(self::USER, $this->loader->getReference('user2'));
+        $this->assertNotEquals($this->loader->getReference('user2')->fullname, '<firstName()>');
+        $this->assertNotEmpty($this->loader->getReference('user2')->fullname);
+        $this->assertSame($this->loader->getReference('user2')->favoriteNumber, 42);
+    }
+
     /**
      * @expectedException \UnexpectedValueException
      * @expectedExceptionMessage Cannot use <current()> out of fixtures ranges

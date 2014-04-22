@@ -490,6 +490,10 @@ Nelmio\Entity\User:
 Base fixtures, to be extended from, can be created to be able to *only* need
 to define less additional values in a set of common fixture definitions.
 
+You can extend any already-loaded reference.  However you might want
+to create a base template that is not itself a complete object and
+that you don't want persisted.
+
 By declaring a fixture as a template using the `(template)` flag, Alice will set
 the instance as a template for that file. Templates instances are not persisted.
 

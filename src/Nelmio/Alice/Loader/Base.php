@@ -201,8 +201,10 @@ class Base implements LoaderInterface
                             }
                         }
                     }
+
+                    $this->templates[$name] = $spec;
+
                     if (isset($instanceFlags['template'])) {
-                        $this->templates[$name] = $spec;
                         continue;
                     }
                     $instances[$name] = array($this->createInstance($class, $name, $spec), $class, $name, $spec, $classFlags, $instanceFlags, null);
