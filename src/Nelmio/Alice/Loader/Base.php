@@ -193,11 +193,14 @@ class Base implements LoaderInterface
                 } else {
                     list($name, $instanceFlags) = $this->parseFlags($name);
                     if (!empty($instanceFlags)) {
+                        // @todo[md] Partition flags: extends (reverse) before drops
                         // Reverse flag order: check templates from last to first, so that last one wins
                         foreach (array_reverse(array_keys($instanceFlags)) as $flag) {
                             if(preg_match('#^extends\s*(.+)$#', $flag, $match)) {
                                 $template = $this->getTemplate($match[1]);
                                 $spec = array_merge($template, $spec);
+                            } elseif (preg_match('#^(drop)\s*(.+)$#', $flag, $match)) {
+                                unset($spec[$match[2]]);
                             }
                         }
                     }

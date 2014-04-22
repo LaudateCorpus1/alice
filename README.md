@@ -579,6 +579,24 @@ Nelmio\Entity\User:
 All files are merged in one data set before generation, and the includer's content
 takes precedence over included files' fixtures in case of duplicate keys.
 
+When extending a template or object, the base may contain fields that
+you do not want or are not compatible with the object you are
+creating.  In this case you can ignore them with the `(drop)` flag
+followed by the name of the field.  Multiple fields require multiple
+`(drop)` flags.
+
+```yaml
+Nelmio\Entity\User:
+    user1:
+        name: <firstName()>
+        lastname: <lastName()>
+        city: <city()>
+        age: <numberBetween(1, 50)>
+Nelmio\Entity\UserSlim:
+    user2 (extends user, drop city, drop age):
+        name: Slim
+```
+
 ### Variables ###
 
 For some advanced use cases you sometimes need to reference one property

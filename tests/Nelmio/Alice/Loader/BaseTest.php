@@ -18,6 +18,7 @@ use Nelmio\Alice\fixtures\User;
 class BaseTest extends \PHPUnit_Framework_TestCase
 {
     const USER = 'Nelmio\Alice\fixtures\User';
+    const USER2 = 'Nelmio\Alice\fixtures\User2';
     const GROUP = 'Nelmio\Alice\fixtures\Group';
     const CONTACT = 'Nelmio\Alice\fixtures\Contact';
     const TOPIC = 'Nelmio\Alice\fixtures\Topic';
@@ -999,6 +1000,31 @@ class BaseTest extends \PHPUnit_Framework_TestCase
         $this->assertNotEquals($this->loader->getReference('user2')->fullname, '<firstName()>');
         $this->assertNotEmpty($this->loader->getReference('user2')->fullname);
         $this->assertSame($this->loader->getReference('user2')->favoriteNumber, 42);
+    }
+
+    public function testObjectsInheritObjectsDroppingFields()
+    {
+        $res = $this->loadData(array(
+            self::USER => array(
+                'user' => array(
+                    'fullname'    => '<firstName()>',
+                    'favoriteNumber'    => 2,
+                ),
+            ),
+            self::USER2 => array(
+                'user2 (extends user, drop friends, drop favoriteNumber)' => array(
+                    'unfavoriteNumber' => 11
+                ),
+            ),
+        ));
+
+        $this->assertCount(2, $res);
+        $this->assertInstanceOf(self::USER2, $this->loader->getReference('user2'));
+        $this->assertNotEquals($this->loader->getReference('user2')->fullname, '<firstName()>');
+        $this->assertNotEmpty($this->loader->getReference('user2')->fullname);
+        $this->assertObjectNotHasAttribute('friends', $this->loader->getReference('user2'));
+        $this->assertObjectNotHasAttribute('favoriteNumber', $this->loader->getReference('user2'));
+        $this->assertSame($this->loader->getReference('user2')->unfavoriteNumber, 11);
     }
 
     /**
